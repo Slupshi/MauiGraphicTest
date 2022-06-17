@@ -1,6 +1,9 @@
 ﻿using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting.Effects;
+using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.Maui.Graphics;
+using SkiaSharp;
 
 namespace MauiGraphicTest
 {
@@ -9,6 +12,7 @@ namespace MauiGraphicTest
     {
         private readonly ViewModel _viewModel;
         private CustomGraphModel _graphModel;
+
         public View(ViewModel viewModel)
         {
             _viewModel = viewModel;
@@ -32,7 +36,7 @@ namespace MauiGraphicTest
                 NamePadding = new LiveChartsCore.Drawing.Padding(15),
                 NameTextSize = 20,
                 MinStep = 1,
-                ShowSeparatorLines = true,
+                ShowSeparatorLines = true,                
                 Labels = new string[] { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" },
 
             };
@@ -40,15 +44,33 @@ namespace MauiGraphicTest
             GraphicChart.XAxes = new List<Axis> { xAxis };
 
             _viewModel.YAxis = yAxis;
-            //GraphicChart.DataPointerDown += GraphicChart_DataPointerDown;
-
-            
+            _viewModel.XAxis = xAxis;
+            GraphicChart.DataPointerDown += GraphicChart_DataPointerDown;
+        
         }
 
-
-        private void GraphicChart_DataPointerDown(LiveChartsCore.Kernel.Sketches.IChartView chart, IEnumerable<LiveChartsCore.Kernel.ChartPoint> points)
+        private async void GraphicChart_DataPointerDown(LiveChartsCore.Kernel.Sketches.IChartView chart, IEnumerable<LiveChartsCore.Kernel.ChartPoint> points)
         {
             double index = points.First().SecondaryValue;
+            _graphModel.Sections.Clear();
+            _graphModel.Sections.Add(
+                new RectangularSection()
+                {
+                    Xi = index,
+                    Xj = index,
+                    Stroke = new SolidColorPaint
+                    {
+                        Color = SKColors.Gray,
+                        StrokeThickness = 2,
+                        PathEffect = new DashEffect(new float[] { 3, 5 })
+                    }
+                });
+            await Task.Delay(3000);
+            if( !_graphModel.Sections.Any() || index == _graphModel.Sections.First().Xi)
+            {
+                _graphModel.Sections.Clear();
+            }        
+            
         }
 
         private void Button_Clicked(object sender, EventArgs e)

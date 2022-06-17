@@ -1,9 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.Kernel.Sketches;
+using LiveChartsCore.SkiaSharpView.Painting.Effects;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView;
+using SkiaSharp;
 
 namespace MauiGraphicTest
 {
@@ -13,6 +16,7 @@ namespace MauiGraphicTest
         private readonly Random _random = new Random();
         public CustomGraphModel GraphModel { get; set; }
         public  ICartesianAxis YAxis { get; set; }
+        public ICartesianAxis XAxis { get; set; }
 
         public ViewModel()
         {
@@ -21,8 +25,10 @@ namespace MauiGraphicTest
                 Name = "CA HT",
                 Series = new ObservableCollection<ISeries>(),
                 Labeler = Labelers.Currency,
+                Sections = new ObservableCollection<RectangularSection>(),               
 
-            };            
+            };     
+            
         }
 
         private ObservableCollection<ObservableValue> RandomizeSeries()
@@ -72,10 +78,12 @@ namespace MauiGraphicTest
             if(YAxis.Labeler == Labelers.Currency)
             {
                 YAxis.Labeler = Labelers.Default;
+                XAxis.Name = "Clients";
             }
             else
             {
                 YAxis.Labeler = Labelers.Currency;
+                XAxis.Name = "CA HT hors rétro";
             }
             int seriesCount = GraphModel.Series.Count;
             if(seriesCount > 0)

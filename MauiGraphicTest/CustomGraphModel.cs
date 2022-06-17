@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
 
 namespace MauiGraphicTest
 {
@@ -15,7 +16,7 @@ namespace MauiGraphicTest
         public string Name { get; set; }
         public ObservableCollection<ISeries> Series { get; set; }
         public Func<double, string> Labeler { get; set; }
-
+        public ObservableCollection<RectangularSection> Sections { get; set; }
 
     }
 }

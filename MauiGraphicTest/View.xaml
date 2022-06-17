@@ -59,14 +59,14 @@
             </StackLayout>
             <local:CustomGraph
                 x:Name="GraphicChart"
-                Grid.Row="2"
+                Grid.Row="1"
                 Grid.Column="1"
                 Padding="20"
                 BackgroundColor="White"
-                DrawMarginFrame="{Binding DrawMarginFrame}"
                 HeightRequest="400"
                 HorizontalOptions="Center"
                 LegendPosition="Bottom"
+                Sections="{Binding GraphModel.Sections}"
                 Series="{Binding GraphModel.Series}"
                 TooltipPosition="Right"
                 WidthRequest="600">
@@ -75,7 +75,7 @@
                         <HorizontalStackLayout>
                             <Frame
                                 Padding="6"
-                                Background="White"
+                                Background="white"
                                 CornerRadius="4"
                                 HasShadow="True">
                                 <StackLayout BindableLayout.ItemsSource="{Binding Points, Source={RelativeSource AncestorType={x:Type lvc:TooltipBindingContext}}}">
