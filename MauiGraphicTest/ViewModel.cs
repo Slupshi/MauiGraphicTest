@@ -20,14 +20,10 @@ namespace MauiGraphicTest
 
         public ViewModel()
         {
-            GraphModel = new CustomGraphModel()
-            {
-                Name = "CA HT",
-                Series = new ObservableCollection<ISeries>(),
-                Labeler = Labelers.Currency,
-                Sections = new ObservableCollection<RectangularSection>(),               
-
-            };     
+            GraphModel = new CustomGraphModel(
+                name: "Toto",
+                isCurrency: true,
+                isWeekly: true);
             
         }
 

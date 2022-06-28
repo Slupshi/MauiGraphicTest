@@ -4,6 +4,8 @@ using LiveChartsCore.SkiaSharpView.Painting.Effects;
 using LiveChartsCore.SkiaSharpView.Painting;
 using Microsoft.Maui.Graphics;
 using SkiaSharp;
+using LiveChartsCore.Defaults;
+using System.Collections.ObjectModel;
 
 namespace MauiGraphicTest
 {
@@ -37,7 +39,7 @@ namespace MauiGraphicTest
                 NameTextSize = 20,
                 MinStep = 1,
                 ShowSeparatorLines = true,                
-                Labels = new string[] { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" },
+                Labels = _graphModel.Labels,
 
             };
             GraphicChart.YAxes = new List<Axis> { yAxis };
@@ -61,14 +63,21 @@ namespace MauiGraphicTest
                     Stroke = new SolidColorPaint
                     {
                         Color = SKColors.Gray,
-                        StrokeThickness = 2,
-                        PathEffect = new DashEffect(new float[] { 3, 5 })
+                        StrokeThickness = 3,
+                        PathEffect = new DashEffect(new float[] { 5, 9})
                     }
                 });
+            //var pointsList = new ObservableCollection<ObservablePoint>();
+            //foreach(var point in points)
+            //{
+            //    pointsList.Add(new ObservablePoint(x: point.SecondaryValue, y: point.PrimaryValue));
+            //}
+            //_graphModel.Series.Add(new ScatterSeries<ObservablePoint>() { Values = pointsList});
             await Task.Delay(3000);
             if( !_graphModel.Sections.Any() || index == _graphModel.Sections.First().Xi)
             {
                 _graphModel.Sections.Clear();
+                //_graphModel.Series.RemoveAt(_graphModel.Series.Count-1);
             }        
             
         }
@@ -96,17 +105,6 @@ namespace MauiGraphicTest
         private void Button_Clicked_4(object sender, EventArgs e)
         {
             _viewModel.ResetSeries();
-        }
-    }
-
-    public class Drawing : IDrawable
-    {
-        public void Draw(ICanvas canvas, RectF dirtyRect)
-        {
-            canvas.StrokeColor = Colors.Grey;
-            canvas.StrokeSize = 2;
-            canvas.StrokeDashPattern = new float[] { 2, 2 };
-            canvas.DrawLine(268, 40, 268, 290);
         }
     }
 }

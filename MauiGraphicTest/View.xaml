@@ -10,7 +10,6 @@
         <lvc:PaintTasksValueConverter x:Key="paintTaskConverter" />
         <lvc:WidthConverter x:Key="wConverter" />
         <lvc:HeightConverter x:Key="hConverter" />
-        <local:Drawing x:Key="drawable" />
     </ContentPage.Resources>
 
     <ContentPage.Content>

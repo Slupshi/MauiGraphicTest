@@ -17,6 +17,21 @@ namespace MauiGraphicTest
         public ObservableCollection<ISeries> Series { get; set; }
         public Func<double, string> Labeler { get; set; }
         public ObservableCollection<RectangularSection> Sections { get; set; }
+        public string?[] Labels { get; set; }
+
+        public CustomGraphModel()
+        {
+
+        }
+
+        public CustomGraphModel(string name, bool isCurrency, bool isWeekly)
+        {
+            Name = name;
+            Series = new ObservableCollection<ISeries>();
+            Labeler = isCurrency ? Labelers.Currency : Labelers.Default;
+            Sections = new ObservableCollection<RectangularSection>();
+            Labels = isWeekly ? new string[] { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" } : null;
+        }
 
     }
 }
