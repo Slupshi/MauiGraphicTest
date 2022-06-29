@@ -60,24 +60,29 @@ namespace MauiGraphicTest
         {
             _timer.Stop();
             double index = points.First().SecondaryValue;
-            _graphModel.Sections.Clear();
-            //var pointsToDelete = _graphModel.Series.Where(s => s.Name == "Points").ToList();
-            //pointsToDelete.ForEach(p => _graphModel.Series.Remove(p));
+            ClearTooltipAddons();
             _graphModel.Sections.Add(CustomToolTipAddons.CreateDashLine(index));
+
             //var pointsList = new ObservableCollection<ObservablePoint>();
             //foreach (var point in points)
             //{
             //    pointsList.Add(new ObservablePoint(x: point.SecondaryValue, y: point.PrimaryValue));
             //}
             //_graphModel.Series.Add(CustomToolTipAddons.CreateIntersectionPoints(pointsList));
+
             _timer.Start();             
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void ClearTooltipAddons()
         {
             _graphModel.Sections.Clear();
             //var pointsToDelete = _graphModel.Series.Where(s => s.Name == "Points").ToList();
             //pointsToDelete.ForEach(p => _graphModel.Series.Remove(p));
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            ClearTooltipAddons();
             _timer.Stop();
         }
 
