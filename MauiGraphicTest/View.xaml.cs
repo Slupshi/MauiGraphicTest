@@ -15,10 +15,15 @@ namespace MauiGraphicTest
         private readonly ViewModel _viewModel;
         private CustomGraphModel _graphModel;
 
+        private Microsoft.Maui.Dispatching.IDispatcherTimer _timer;
+
         public View(ViewModel viewModel)
         {
             _viewModel = viewModel;
             _graphModel = _viewModel.GraphModel;
+            _timer = Dispatcher.CreateTimer();
+            _timer.Interval = TimeSpan.FromSeconds(2);
+            _timer.Tick += Timer_Tick;
 
             BindingContext = _viewModel;
 
@@ -53,33 +58,27 @@ namespace MauiGraphicTest
 
         private async void GraphicChart_DataPointerDown(LiveChartsCore.Kernel.Sketches.IChartView chart, IEnumerable<LiveChartsCore.Kernel.ChartPoint> points)
         {
+            _timer.Stop();
             double index = points.First().SecondaryValue;
             _graphModel.Sections.Clear();
-            _graphModel.Sections.Add(
-                new RectangularSection()
-                {
-                    Xi = index,
-                    Xj = index,
-                    Stroke = new SolidColorPaint
-                    {
-                        Color = SKColors.Gray,
-                        StrokeThickness = 3,
-                        PathEffect = new DashEffect(new float[] { 5, 9})
-                    }
-                });
+            //var pointsToDelete = _graphModel.Series.Where(s => s.Name == "Points").ToList();
+            //pointsToDelete.ForEach(p => _graphModel.Series.Remove(p));
+            _graphModel.Sections.Add(CustomToolTipAddons.CreateDashLine(index));
             //var pointsList = new ObservableCollection<ObservablePoint>();
-            //foreach(var point in points)
+            //foreach (var point in points)
             //{
             //    pointsList.Add(new ObservablePoint(x: point.SecondaryValue, y: point.PrimaryValue));
             //}
-            //_graphModel.Series.Add(new ScatterSeries<ObservablePoint>() { Values = pointsList});
-            await Task.Delay(3000);
-            if( !_graphModel.Sections.Any() || index == _graphModel.Sections.First().Xi)
-            {
-                _graphModel.Sections.Clear();
-                //_graphModel.Series.RemoveAt(_graphModel.Series.Count-1);
-            }        
-            
+            //_graphModel.Series.Add(CustomToolTipAddons.CreateIntersectionPoints(pointsList));
+            _timer.Start();             
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            _graphModel.Sections.Clear();
+            //var pointsToDelete = _graphModel.Series.Where(s => s.Name == "Points").ToList();
+            //pointsToDelete.ForEach(p => _graphModel.Series.Remove(p));
+            _timer.Stop();
         }
 
         private void Button_Clicked(object sender, EventArgs e)
