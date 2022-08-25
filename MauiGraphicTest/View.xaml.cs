@@ -6,6 +6,10 @@ using Microsoft.Maui.Graphics;
 using SkiaSharp;
 using LiveChartsCore.Defaults;
 using System.Collections.ObjectModel;
+using LiveChartsCore.SkiaSharpView.Drawing.Geometries;
+using LiveChartsCore.SkiaSharpView.Drawing;
+using CommunityToolkit.Maui.Views;
+using SkiaSharp.Extended.UI.Controls;
 
 namespace MauiGraphicTest
 {
@@ -43,17 +47,17 @@ namespace MauiGraphicTest
                 NamePadding = new LiveChartsCore.Drawing.Padding(15),
                 NameTextSize = 20,
                 MinStep = 1,
-                ShowSeparatorLines = true,                
+                ShowSeparatorLines = true,
                 Labels = _graphModel.Labels,
 
             };
             GraphicChart.YAxes = new List<Axis> { yAxis };
             GraphicChart.XAxes = new List<Axis> { xAxis };
 
-            _viewModel.YAxis = yAxis;
-            _viewModel.XAxis = xAxis;
+            _viewModel.GraphModel.YAxis = yAxis;
+            _viewModel.GraphModel.XAxis = xAxis;
             GraphicChart.DataPointerDown += GraphicChart_DataPointerDown;
-        
+
         }
 
         private async void GraphicChart_DataPointerDown(LiveChartsCore.Kernel.Sketches.IChartView chart, IEnumerable<LiveChartsCore.Kernel.ChartPoint> points)
@@ -63,6 +67,31 @@ namespace MauiGraphicTest
             ClearTooltipAddons();
             _graphModel.Sections.Add(CustomToolTipAddons.CreateDashLine(index));
 
+            //double pointCoord = points.First().PrimaryValue;
+            //double max = 0;
+            //foreach (ISeries serie in _graphModel.Series)
+            //{
+            //    foreach (ObservableValue value in serie.Values)
+            //    {
+            //        max = (double)(value.Value > max ? value.Value : max);
+            //    }
+            //}
+            //_graphModel.YAxis.MaxLimit = max;
+            //var toto = new RectangularSection()
+            //{
+            //    Xi = index-(0.1),
+            //    Yi = pointCoord+(max*0.03),
+            //    Xj = index+(0.1),
+            //    Yj = pointCoord-(max*0.03),
+            //    Fill = new SolidColorPaint(SKColors.Gray),
+            //    Stroke = new SolidColorPaint
+            //    {
+            //        Color = SKColors.Red,
+            //        StrokeThickness = 2,
+            //    }
+            //};
+            //_graphModel.Sections.Add(toto);
+
             //var pointsList = new ObservableCollection<ObservablePoint>();
             //foreach (var point in points)
             //{
@@ -70,12 +99,13 @@ namespace MauiGraphicTest
             //}
             //_graphModel.Series.Add(CustomToolTipAddons.CreateIntersectionPoints(pointsList));
 
-            _timer.Start();             
+            _timer.Start();
         }
 
         private void ClearTooltipAddons()
         {
             _graphModel.Sections.Clear();
+
             //var pointsToDelete = _graphModel.Series.Where(s => s.Name == "Points").ToList();
             //pointsToDelete.ForEach(p => _graphModel.Series.Remove(p));
         }
@@ -109,6 +139,13 @@ namespace MauiGraphicTest
         private void Button_Clicked_4(object sender, EventArgs e)
         {
             _viewModel.ResetSeries();
+        }
+
+        private void Button_Clicked_5(object sender, EventArgs e)
+        {
+            //var popup = new LoadingPopup();
+            
+            //this.ShowPopup(popup);
         }
     }
 }

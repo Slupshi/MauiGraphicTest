@@ -23,7 +23,7 @@ namespace MauiGraphicTest
                 Stroke = new SolidColorPaint
                 {
                     Color = SKColors.Gray,
-                    StrokeThickness = 3,
+                    StrokeThickness = 2,
                     PathEffect = new DashEffect(new float[] { 5, 9 })
                 }
             };

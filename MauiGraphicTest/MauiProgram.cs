@@ -1,4 +1,6 @@
 ﻿namespace MauiGraphicTest;
+
+using CommunityToolkit.Maui;
 using Microsoft.Extensions.DependencyInjection;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
@@ -8,6 +10,7 @@ public static class MauiProgram
 	{
 		var builder = MauiApp.CreateBuilder();
 		builder
+			.UseMauiCommunityToolkit()
 			.UseSkiaSharp()
 			.UseMauiApp<App>()
 			.ConfigureFonts(fonts =>

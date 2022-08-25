@@ -4,12 +4,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:core="clr-namespace:LiveChartsCore;assembly=LiveChartsCore"
              xmlns:local="clr-namespace:MauiGraphicTest;assembly=MauiGraphicTest"
-             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui">
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:skia="clr-namespace:SkiaSharp.Extended.UI.Controls;assembly=SkiaSharp.Extended.UI">
 
     <ContentPage.Resources>
         <lvc:PaintTasksValueConverter x:Key="paintTaskConverter" />
         <lvc:WidthConverter x:Key="wConverter" />
         <lvc:HeightConverter x:Key="hConverter" />
+        <local:CustomGraphCanvas x:Key="draw" />
     </ContentPage.Resources>
 
     <ContentPage.Content>
@@ -37,6 +39,25 @@
                 <Button Margin="5"
                         Clicked="Button_Clicked_4"
                         Text="Reset" />
+                <Button Margin="5"
+                        Clicked="Button_Clicked_5"
+                        Text="Loading" />
+                <!--<ListView sk:Skeleton.Animation="{sk:DefaultAnimation Fade}"
+                          sk:Skeleton.IsBusy="{Binding IsBusy}"
+                          sk:Skeleton.IsParent="True"
+                          BackgroundColor="Transparent"
+                          ItemTemplate="{StaticResource ItemTemplate}"
+                          ItemsSource="{Binding Items}"
+                          RowHeight="90"
+                          SelectionMode="None"
+                          SeparatorVisibility="None"
+                          VerticalOptions="FillAndExpand" />-->
+                <skia:SKLottieView HeightRequest="200"
+                                   HorizontalOptions="Center"
+                                   RepeatCount="-1"
+                                   SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                                   Source="loading.json"
+                                   WidthRequest="200" />
             </StackLayout>
             <local:CustomGraph x:Name="GraphicChart"
                                Grid.Column="1"
@@ -49,12 +70,14 @@
                                Series="{Binding GraphModel.Series}"
                                TooltipPosition="Right"
                                WidthRequest="600">
+                <!--  Custom Tooltip  -->
                 <local:CustomGraph.TooltipTemplate>
                     <DataTemplate>
                         <HorizontalStackLayout>
                             <Frame Padding="6"
-                                   Background="white"
-                                   CornerRadius="4"
+                                   Background="#f4f4f5"
+                                   BorderColor="Transparent"
+                                   CornerRadius="5"
                                    HasShadow="True">
                                 <StackLayout BindableLayout.ItemsSource="{Binding Points,
                                                                                   Source={RelativeSource AncestorType={x:Type lvc:TooltipBindingContext}}}">
@@ -62,15 +85,23 @@
                                         <DataTemplate>
                                             <StackLayout Orientation="Horizontal"
                                                          VerticalOptions="Center">
-                                                <lvc:MotionCanvas Margin="5,0,0,0"
+                                                <!--<lvc:MotionCanvas Margin="5,0,0,0"
                                                                   HeightRequest="{Binding Context.Series,
                                                                                           Converter={StaticResource hConverter}}"
                                                                   PaintTasks="{Binding Context.Series,
                                                                                        Converter={StaticResource paintTaskConverter}}"
                                                                   VerticalOptions="Center"
                                                                   WidthRequest="{Binding Context.Series,
-                                                                                         Converter={StaticResource wConverter}}" />
-                                                <Label Text="{Binding AsTooltipString}"
+                                                                                         Converter={StaticResource wConverter}}" />-->
+                                                <BoxView x:Name="TooltipLine"
+                                                         Margin="10,0,5,0"
+                                                         CornerRadius="100"
+                                                         HeightRequest="15"
+                                                         VerticalOptions="Center"
+                                                         WidthRequest="15"
+                                                         Color="{Binding Context.Series.Color}" />
+                                                <Label Margin="0,0,10,0"
+                                                       Text="{Binding AsTooltipString}"
                                                        TextColor="Black" />
                                             </StackLayout>
                                         </DataTemplate>
@@ -80,6 +111,7 @@
                         </HorizontalStackLayout>
                     </DataTemplate>
                 </local:CustomGraph.TooltipTemplate>
+                <!--  Custom Legend  -->
                 <local:CustomGraph.LegendTemplate>
                     <DataTemplate>
                         <Frame Padding="6"
@@ -95,14 +127,12 @@
                                     <DataTemplate>
                                         <StackLayout Orientation="Horizontal"
                                                      VerticalOptions="Center">
-                                            <lvc:MotionCanvas Margin="5,0,0,0"
-                                                              HeightRequest="{Binding Source={RelativeSource AncestorType={x:Type core:ISeries}},
-                                                                                      Converter={StaticResource hConverter}}"
-                                                              PaintTasks="{Binding Source={RelativeSource AncestorType={x:Type core:ISeries}},
-                                                                                   Converter={StaticResource paintTaskConverter}}"
-                                                              VerticalOptions="Center"
-                                                              WidthRequest="{Binding Source={RelativeSource AncestorType={x:Type core:ISeries}},
-                                                                                     Converter={StaticResource wConverter}}" />
+                                            <BoxView x:Name="LegendLine"
+                                                     Margin="10,0,5,0"
+                                                     HeightRequest="3"
+                                                     VerticalOptions="Center"
+                                                     WidthRequest="30"
+                                                     Color="{Binding Color}" />
                                             <Label Text="{Binding Name}"
                                                    TextColor="Black" />
                                         </StackLayout>

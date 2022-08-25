@@ -15,8 +15,10 @@ namespace MauiGraphicTest
     {
         private readonly Random _random = new Random();
         public CustomGraphModel GraphModel { get; set; }
-        public  ICartesianAxis YAxis { get; set; }
-        public ICartesianAxis XAxis { get; set; }
+
+        SKColor _darkGreen = new SKColor().WithRed(4).WithGreen(51).WithBlue(51);
+        SKColor _darkOrange = new SKColor().WithRed(225).WithGreen(110).WithBlue(9);
+
 
         public ViewModel()
         {
@@ -24,12 +26,14 @@ namespace MauiGraphicTest
                 name: "Toto",
                 isCurrency: true,
                 isWeekly: true);
-            
+            //GraphModel.Series.Add(new CustomGraphLine("Ligne", RandomizeSeries(), true));
+
         }
 
         private ObservableCollection<ObservableValue> RandomizeSeries()
         {
-            int max = YAxis.Labeler == Labelers.Currency ? 1000 : 200;
+            //int max = GraphModel.YAxis.Labeler == Labelers.Currency ? 1000 : 200;
+            int max = 1000;
             return new ObservableCollection<ObservableValue>
                 {
                         new ObservableValue(RandomizeValue(max)),
@@ -59,7 +63,7 @@ namespace MauiGraphicTest
             //if (GraphModel.Series.Count == 5) return;
 
             GraphModel.Series.Add(
-                new CustomGraphLine($"N{(GraphModel.Series.Count > 1 ? $"-{GraphModel.Series.Count}" : string.Empty)}", RandomizeSeries(), YAxis.Labeler == Labelers.Currency ? true : false));
+                new CustomGraphLine(name:$"N{(GraphModel.Series.Count >= 1 ? $"-{GraphModel.Series.Count}" : string.Empty)}",values: RandomizeSeries(), isCurrency: GraphModel.YAxis.Labeler == Labelers.Currency ? true : false, color: (GraphModel.Series.Count >= 1 ? _darkGreen : _darkOrange)));
         }
 
         public void RemoveSeries()
@@ -71,31 +75,32 @@ namespace MauiGraphicTest
 
         public void ChangeGraphicType()
         {
-            if(YAxis.Labeler == Labelers.Currency)
-            {
-                YAxis.Labeler = Labelers.Default;
-                XAxis.Name = "Clients";
-            }
-            else
-            {
-                YAxis.Labeler = Labelers.Currency;
-                XAxis.Name = "CA HT hors rétro";
-            }
-            int seriesCount = GraphModel.Series.Count;
-            if(seriesCount > 0)
-            {
-                GraphModel.Series.Clear();
-                for (int i = 0; i < seriesCount; i++)
-                {
-                    AddSeries();
-                }
-            }
+            //if(GraphModel.YAxis.Labeler == Labelers.Currency)
+            //{
+            //    GraphModel.YAxis.Labeler = Labelers.Default;
+            //    GraphModel.XAxis.Name = "Clients";
+            //}
+            //else
+            //{
+            //    GraphModel.YAxis.Labeler = Labelers.Currency;
+            //    GraphModel.XAxis.Name = "CA HT hors rétro";
+            //}
+            //int seriesCount = GraphModel.Series.Count;
+            //if(seriesCount > 0)
+            //{
+            //    GraphModel.Series.Clear();
+            //    for (int i = 0; i < seriesCount; i++)
+            //    {
+            //        AddSeries();
+            //    }
+            //}
+            GraphModel.ChangeGraphicType();
         }
 
         public void ResetSeries()
         {
             GraphModel.Series.Clear();
-            YAxis.Labeler = Labelers.Default;
+            GraphModel.YAxis.Labeler = Labelers.Default;
         }
 
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LiveChartsCore;
 using LiveChartsCore.Defaults;
+using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
 
 namespace MauiGraphicTest
@@ -18,6 +19,9 @@ namespace MauiGraphicTest
         public Func<double, string> Labeler { get; set; }
         public ObservableCollection<RectangularSection> Sections { get; set; }
         public string?[] Labels { get; set; }
+        public ICartesianAxis YAxis { get; set; }
+        public ICartesianAxis XAxis { get; set; }
+
 
         public CustomGraphModel()
         {
@@ -30,7 +34,12 @@ namespace MauiGraphicTest
             Series = new ObservableCollection<ISeries>();
             Labeler = isCurrency ? Labelers.Currency : Labelers.Default;
             Sections = new ObservableCollection<RectangularSection>();
-            Labels = isWeekly ? new string[] { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" } : null;
+            Labels = isWeekly ? new string[] { "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche" } : new string[] { "X1", "X2", "X3", "X4", "X5", "X6", "X7" };
+        }
+
+        public void ChangeGraphicType()
+        {
+            YAxis.Labeler = YAxis.Labeler == Labelers.Currency ? Labelers.Default : Labelers.Currency;
         }
 
     }
